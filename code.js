@@ -1,8 +1,8 @@
 //document.body.onload = addElement
 
 // global variables
-let rows = 25;
-let cols = 25;
+let rows =50;
+let cols = 50;
 let el = document.getElementById('generation')
 let gen = 0;
 let timer;
