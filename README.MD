@@ -6,4 +6,4 @@
 
 3. ```Any live cell with two or three live neighbors lives and moves on to the next generation```
 
-4. ``` Any dead cell with exactly three live neighbors will come to life(reproduction). Color determination in this phase.```
+4. ``` Any dead cell with exactly three live neighbors will come to life(reproduction).```
