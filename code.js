@@ -3,11 +3,38 @@
 // global variables
 let rows = 24;
 let cols = 24;
+let gen = 0;
 
 let playing = false;
+
+// grid state
+let grid = new Array(rows)
+let nextGrid = new Array(rows)
+
+// adds arrays within initial arrays above
+function initializeGrids() {
+    // only one loop needed because both arrays are the same size
+    for (let i = 0; i < rows; i++) {
+        grid[i] = new Array(cols);
+        nextGrid[i] = new Array(cols);
+    }
+}
+
+// loops every row and sets both grid and next grid at i and j to 0
+function resetGrids() {
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            grid[i][j] = 0;
+            nextGrid[i][j] = 0;
+        }
+    }
+}
+
 // initialize
 function initialize() {
     createTable();
+    initializeGrids();
+    resetGrids();
     setupControlButtons();
 }
 // createe the board
@@ -41,12 +68,18 @@ function createTable() {
 
 // turns cel from live to dead or dead to live
 function cellClickHandler() {
+    // splitting to determine the row and column for the cell in the model which corrosponds to the cell
+    let rowcol = this.id.split("_");
+    let row = rowcol[0];
+    let col = rowcol[1];
     // gets class from the current cell and returns value of said cell
     let classes = this.getAttribute("class");
     if (classes.indexOf("live") > -1) {
         this.setAttribute("class","dead");
+        grid[row][col] = 0;
     } else {
             this.setAttribute("class","live")
+            grid[row][col] = 1;
         }
     }
 
