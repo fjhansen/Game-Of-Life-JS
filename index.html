@@ -12,6 +12,23 @@
 <div class="controls">
 <button id="start">🎬</button>
 <button id="clear">❌</button>
+<button id="random">🎲</button>
+<button id="increment">increment</button>
+<button>glider</button>
+<button>beehive</button>
+<div id="generation"><p>Gen:</p></div>
+
+<div>
+    <h2>The Rules</h2>
+    <ol>
+        <li>Any live cell with fewer than two live neighbors dies(death of lonelyness)</li>
+        <li>Any live cell with more than three live neighbors dies (overpopulation)
+        </li>
+        <li>Any live cell with two or three live neighbors lives and moves on to the next generation</li>
+        <li>Any dead cell with exactly three live neighbors will come to life(reproduction)</li>
+    </ol>
+</div>
+
 </div>
 
 <script src="code.js">

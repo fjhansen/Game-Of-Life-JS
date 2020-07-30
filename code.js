@@ -1,9 +1,11 @@
 //document.body.onload = addElement
 
 // global variables
-let rows = 24;
-let cols = 24;
-let gen = 0;
+let rows = 25;
+let cols = 25;
+let gen = [];
+let timer;
+let reproductionTime = 200;
 
 let playing = false;
 
@@ -30,10 +32,21 @@ function resetGrids() {
     }
 }
 
+// loops through every col/row in grid and copies values in next grid array to current grid array and then sets next grid to all 0s to reset
+function copyAndResetGrid() {
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            grid[i][j] = nextGrid[i][j];
+            nextGrid[i][j] = 0
+        }
+    }
+}
+
 // initialize
 function initialize() {
     createTable();
     initializeGrids();
+    generationCount();
     resetGrids();
     setupControlButtons();
 }
@@ -83,6 +96,21 @@ function cellClickHandler() {
         }
     }
 
+// TODO: make beehive function. modify updateView for this.
+
+// updates the view to match the data structure of the grid using splitting
+function updateView() {
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            let cell = document.getElementById(i + "_" + j);
+            if (grid[i][j] == 0) {
+                cell.setAttribute("class", "dead");
+            } else {
+                cell.setAttribute("class", "live")
+            }
+            }
+        }
+    }
 // button handlers
 
 function setupControlButtons() {
@@ -92,6 +120,9 @@ function setupControlButtons() {
     // clear function onclick
     let clearButton = document.getElementById("clear");
     clearButton.onclick = clearButtonHandler;
+
+    let randomButton = document.getElementById("random");
+    randomButton.onclick = randomButtonHandler;
 }
 
 function clearButtonHandler() {
@@ -99,6 +130,21 @@ function clearButtonHandler() {
     playing = false;
     let startButton = document.getElementById("start");
     startButton.innerHTML = "🎬"
+
+    clearTimeout(timer);
+    // resets view
+    let cellsList = document.getElementsByClassName("live");
+    let cells = []
+    for (let i = 0; i < cellsList.length; i++) {
+        //cellsList[i].setAttribute("class", "dead" );
+        cells.push(cellsList[i])
+    }
+    for (let i = 0; i < cells.length; i++) {
+        cells[i].setAttribute("class","dead")
+    }
+    // resets state
+    resetGrids()
+    gen = []
 }
 
 function startButtonHandler() {
@@ -106,6 +152,8 @@ function startButtonHandler() {
         console.log("Pause the game");
         playing = false
         this.innerHTML = "▶"
+        // clear timer
+        clearTimeout(timer)
     } else {
         console.log("Continue game");
         playing = true
@@ -114,8 +162,122 @@ function startButtonHandler() {
     }
 }
 
+function generationCount(){
+    displaydiv = document.getElementById("generation")
+    let new_span = document.createElement("button");
+    for(let i = 0; i < gen.length;) {
+        new_span.innerHTML = gen[i]
+    }
+    displaydiv.appendChild(new_span)
+    // for(let i = 0; i < gen.length;) {
+    //     let new_span = document.createElement('span');
+    //     new_span.innerText = gen[i];
+    //     displaydiv.appendChild(new_span)
+
+}
+
+function randomButtonHandler() {
+    if (playing) return;
+    clearButtonHandler();
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            let isLive = Math.round(Math.random());
+            if (isLive == 1) {
+                let cell = document.getElementById(i + "_" + j);
+                cell.setAttribute("class", "live");
+                grid[i][j] = 1;
+            }
+        }
+    }
+}
+
+function beehiveButtonHandler() {
+    //bugs!!!!
+}
+
 function play() {
     console.log("Play!!!")
+    computeNextGen();
+
+    if (playing) {
+        timer = setTimeout(play, reproductionTime)
+    }
+}
+
+// loops through all rows/cols to activate applyRules function
+function computeNextGen() {
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            applyRules(i, j);
+        }
+        //gen++
+        //console.log("GEN: ",gen)
+    }
+    
+    // updates datastructure
+    copyAndResetGrid()
+    // updates the view
+    updateView()
+    gen++
+    console.log("GEN: ",gen)
+}
+
+// apply the rules of life to one cell at a time
+// 
+function applyRules(row, col) {
+    let numNeighbors = countNeighbors(row, col);
+    if (grid[row][col] == 1) {
+        if (numNeighbors < 2) {
+            nextGrid[row][col] = 0;
+        } else if (numNeighbors == 2 || numNeighbors == 3) {
+            nextGrid[row][col] = 1;
+        } else if (numNeighbors > 3) {
+            nextGrid[row][col] = 0;
+        }
+    } else if (grid[row][col] == 0) {
+        if (numNeighbors == 3) {
+            nextGrid[row][col] = 1;
+        }
+    }
+}
+
+
+function countNeighbors(row, col) {
+    let count = 0;
+    // cell above current cell
+    if (row-1 >= 0) {
+        if (grid[row-1][col] == 1) count++;
+    }
+    // upper left cell
+    // "row-1 >= 0 && col-1 >= 0" checks if cell even exists. this check will fail if used on any cell in the very first row of the grid.
+    if (row-1 >= 0 && col-1 >= 0) {
+        if (grid[row-1][col-1] == 1) count++;
+    }
+    // upper right
+    if (row-1 >= 0 && col+1 < cols) {
+        if (grid[row-1][col+1] == 1) count++;
+    }
+    // to the right
+    if (col-1 >= 0) {
+        if (grid[row][col-1] == 1) count++;
+    }
+    // to the left
+    if (col+1 < cols) {
+        if (grid[row][col+1] == 1) count++;
+    }
+    // directly below
+    if (row+1 < rows) {
+        if (grid[row+1][col] == 1) count++;
+    }
+    // lower left
+    if (row+1 < rows && col-1 >= 0) {
+        if (grid[row+1][col-1] == 1) count++;
+    }
+    // lower right
+    if (row+1 < rows && col+1 < cols) {
+        if (grid[row+1][col+1] == 1) count++;
+    }
+    return count;
 }
 // begin!
 window.onload = initialize
