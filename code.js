@@ -27,12 +27,25 @@ function createTable() {
             cell.setAttribute("id", i + "_" + j);
             // initiate all cells to start with the dead class
             cell.setAttribute("class", "dead");
+            // makes each cell clickable!
+            cell.onclick = cellClickHandler;
             tr.appendChild(cell);
         }
         table.appendChild(tr)
     }
     gridContainer.appendChild(table)
 }
+
+// turns cel from live to dead or dead to live
+function cellClickHandler() {
+    // gets class from the current cell and returns value of said cell
+    let classes = this.getAttribute("class");
+    if (classes.indexOf("live") > -1) {
+        this.setAttribute("class","dead");
+    } else {
+            this.setAttribute("class","live")
+        }
+    }
 
 // begin!
 window.onload = initialize
