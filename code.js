@@ -3,9 +3,12 @@
 // global variables
 let rows = 24;
 let cols = 24;
+
+let playing = false;
 // initialize
 function initialize() {
     createTable();
+    setupControlButtons();
 }
 // createe the board
 function createTable() {
@@ -47,6 +50,40 @@ function cellClickHandler() {
         }
     }
 
+// button handlers
+
+function setupControlButtons() {
+    // start function onclick
+    let startButton = document.getElementById("start");
+    startButton.onclick = startButtonHandler;
+    // clear function onclick
+    let clearButton = document.getElementById("clear");
+    clearButton.onclick = clearButtonHandler;
+}
+
+function clearButtonHandler() {
+    console.log("Clear the game, stop, clear the grid");
+    playing = false;
+    let startButton = document.getElementById("start");
+    startButton.innerHTML = "🎬"
+}
+
+function startButtonHandler() {
+    if (playing) {
+        console.log("Pause the game");
+        playing = false
+        this.innerHTML = "▶"
+    } else {
+        console.log("Continue game");
+        playing = true
+        this.innerHTML = "⏸"
+        play()
+    }
+}
+
+function play() {
+    console.log("Play!!!")
+}
 // begin!
 window.onload = initialize
 
