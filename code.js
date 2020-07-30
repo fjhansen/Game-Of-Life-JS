@@ -124,6 +124,15 @@ function setupControlButtons() {
 
     let randomButton = document.getElementById("random");
     randomButton.onclick = randomButtonHandler;
+    
+    let incrementButton = document.getElementById("increment")
+    incrementButton.onclick = incrementButtonHandler;
+
+    let gliderButton = document.getElementById("glider")
+    gliderButton.onclick = gliderButtonHandler
+
+    let beehiveButton = document.getElementById("beehive")
+    beehiveButton.onclick = beehiveButtonHandler
 }
 
 function clearButtonHandler() {
@@ -182,8 +191,76 @@ function randomButtonHandler() {
     }
 }
 
+function incrementButtonHandler() {
+    if (playing) {
+        playing = false
+    }
+    computeNextGen()
+}
+
+function gliderButtonHandler(row,col) {
+   if (playing) {
+       //clearButtonHandler()
+   }
+
+   for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+        let cell1 = document.getElementById(10 + "_" + 11);
+        let cell2 = document.getElementById(11 + "_" + 12);
+        let cell3 = document.getElementById(12 + "_" + 12);
+        let cell4 = document.getElementById(12 + "_" + 11);
+        let cell5 = document.getElementById(12 + "_" + 10);
+        if (grid[i][j] == grid[10][11]) {
+            cell1.setAttribute("class", "alive");
+            cell2.setAttribute("class", "alive");
+            cell3.setAttribute("class", "alive");
+            cell4.setAttribute("class", "alive");
+            cell5.setAttribute("class", "alive");
+            console.log("success")
+
+            grid[10][11] = 1
+            grid[11][12] = 1
+            grid[12][12] = 1
+            grid[12][11] = 1
+            grid[12][10] = 1
+        } else {
+            cell.setAttribute("class", "live")
+        }
+        }
+    }
+
+}
+
 function beehiveButtonHandler() {
     //bugs!!!!
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            let cell1 = document.getElementById(15 + "_" + 14);
+            let cell2 = document.getElementById(15 + "_" + 15);
+            let cell3 = document.getElementById(16 + "_" + 13);
+            let cell4 = document.getElementById(16 + "_" + 16);
+            let cell5 = document.getElementById(17 + "_" + 14)
+            let cell6 = document.getElementById(17 + "_" + 15);
+            if (grid[i][j] == grid[10][11]) {
+                cell1.setAttribute("class", "alive");
+                cell2.setAttribute("class", "alive");
+                cell3.setAttribute("class", "alive");
+                cell4.setAttribute("class", "alive");
+                cell5.setAttribute("class", "alive");
+                cell6.setAttribute("class", "alive");
+                console.log("success")
+    
+                grid[15][14] = 1
+                grid[15][15] = 1
+                grid[16][13] = 1
+                grid[16][16] = 1
+                grid[17][14] = 1
+                grid[17][15] = 1
+            } else {
+                cell.setAttribute("class", "live")
+            }
+            }
+        }
 }
 
 function play() {
@@ -271,6 +348,8 @@ function countNeighbors(row, col) {
     }
     return count;
 }
+
+
 // begin!
 window.onload = initialize
 

@@ -20,3 +20,17 @@ td.dead {
 td.live {
     background-color: white;
 }
+
+td.alive {
+    background-color: chocolate;
+}
+
+#generation {
+    color: rgb(188, 198, 211);
+    font-size: 25px;
+}
+
+li {
+    color: rgb(188, 198, 211);
+    font-size: 25px; 
+}
