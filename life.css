@@ -25,6 +25,13 @@ td.alive {
     background-color: chocolate;
 }
 
+button {
+    
+    padding: 1em 1em;
+    font-size: 1em;
+    text-align: center;
+}
+
 #generation {
     color: rgb(188, 198, 211);
     font-size: 25px;
