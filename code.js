@@ -3,7 +3,8 @@
 // global variables
 let rows = 25;
 let cols = 25;
-let gen = [];
+let el = document.getElementById('generation')
+let gen = 0;
 let timer;
 let reproductionTime = 200;
 
@@ -144,7 +145,7 @@ function clearButtonHandler() {
     }
     // resets state
     resetGrids()
-    gen = []
+    gen = 0
 }
 
 function startButtonHandler() {
@@ -163,17 +164,7 @@ function startButtonHandler() {
 }
 
 function generationCount(){
-    displaydiv = document.getElementById("generation")
-    let new_span = document.createElement("button");
-    for(let i = 0; i < gen.length;) {
-        new_span.innerHTML = gen[i]
-    }
-    displaydiv.appendChild(new_span)
-    // for(let i = 0; i < gen.length;) {
-    //     let new_span = document.createElement('span');
-    //     new_span.innerText = gen[i];
-    //     displaydiv.appendChild(new_span)
-
+    el.innerText = "Generations:" + " " + gen;
 }
 
 function randomButtonHandler() {
@@ -201,6 +192,7 @@ function play() {
 
     if (playing) {
         timer = setTimeout(play, reproductionTime)
+        generationCount()
     }
 }
 
