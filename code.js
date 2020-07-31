@@ -1,5 +1,5 @@
 //document.body.onload = addElement
-
+//
 // global variables
 let rows = 25;
 let cols = 50;
