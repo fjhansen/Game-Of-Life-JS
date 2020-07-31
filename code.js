@@ -1,7 +1,7 @@
 //document.body.onload = addElement
 
 // global variables
-let rows =50;
+let rows = 50;
 let cols = 50;
 let el = document.getElementById('generation')
 let gen = 0;
